@@ -9,27 +9,32 @@ layout: tutorial
 body_class: tutorial
 resource_icon: /svg/resources/guide.svg
 ---
+
 # Contextual Bandits and Vowpal Wabbit
 
-This guide describes how to run Contextual Bandits (CB) algorithms in Vowpal Wabbit (VW). It features an overview of CB algorithms, when to use them, and a Python tutorial with examples. The goal is to empower you to explore and experiment with CB algorithms to create your own models in VW.
+This guide describes how to run Contextual Bandit (CB) algorithms in Vowpal Wabbit (VW). It features an overview of CB algorithms, when to use them, and a Python tutorial with examples. The goal is to empower you to explore and experiment with CB algorithms and create models in VW.
 
->**Note:** The CB tutorial uses [Vowpal Wabbit Python package](https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/python). VW is supported in C++ and C#.
+## Getting started with Vowpal Wabbit
+
+To install VW—and for more information on building VW from source or using a package manager—see [Getting started](https://github.com/VowpalWabbit/vowpal_wabbit/wiki/) guide. Use this [Tutorial](https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Tutorial) for a step-by-step guide to VW command line mode if you are ready to jump in.
+
+>**Note:** The CB tutorial uses [Vowpal Wabbit Python package](https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/python). VW is supported in C++ and C#, and additional binary packages are available for select platforms. See Getting started module on the homepage for more information.
 
 ## What is a Contextual Bandit?
 
-Bandit algorithms aid decision-making by making smarter choices in dynamic environments where options change rapidly and the set of available actions is limited. Contextual Bandits are algorithms that use additional information (or context) to make better decisions when choosing actions.
+Bandit algorithms aid decision-making by making smarter choices in dynamic environments where options change rapidly, and the set of available actions is limited. Contextual Bandits are algorithms that use additional information (or context) to make better decisions when choosing actions.
 
 ### Contextual Bandit example
 
-For this example, we will use an application called _APP_. This application interacts with the context of a user's behavior (search history, visited pages, or geolocation) in a dynamic environment–such as a news website or a cloud controller.
+For this example, we use a hypothetical application called _APP_. This application interacts with the context of a user's behavior (search history, visited pages, or geolocation) in a dynamic environment–such as a news website or a cloud controller.
 
 _APP_ performs the following functions:
 
 * Some context _x_ arrives and is observed by _APP_.
-* _APP_ chooses an action _a_ from a set of actions _A i.e. a ∈A_ (_A_ may depend on _x_).
+* _APP_ chooses an action _a_ from a set of actions _A, i.e., a ∈A_ (_A_ may depend on _x_).
 * Some reward _r_ for the chosen a is observed by _APP_.
 
-Contextual Bandits use incoming data to help optimize a website to make better algorithmic decisions in real time for the user.
+Contextual Bandits use incoming data to help optimize a website to make better algorithmic decisions in real-time for the user.
 
 For example:
 
@@ -46,25 +51,25 @@ _APP_ news website:
   - **Reward:** - the total downtime
 
 
-We want  _APP_ to take actions that provide the highest possible reward. In machine learning parlance, we want a _model_ that tells us which action to take. This scenario is similar to a traditional Multi Armed Bandit (MAB) problem.
+We want  _APP_ to take actions that provide the highest possible reward. In machine learning parlance, we want a _model_ that tells us which action to take. This scenario is similar to a traditional Multi-Armed Bandit (MAB) problem.
 
 ### Multi-Armed Bandit
 The term _Multi-Armed Bandit (MAB)_ problem comes from a hypothetical experiment where a gambler must choose between multiple slot machine (_one-armed bandits_) actions, each with an unknown payout. The goal is to maximize the payout by optimally choosing the best actions when odds and payouts are unknown.
 
-In MAB, the gambler has no information at all to make a decision.  _APP_ differs from MAB because we have some information available to the _APP_ which is the context. In the Contextual Bandit problem, a learner (the gambler in the hypothetical experiment) repeatedly observes a context, chooses an action, and observes a loss/cost/reward for the chosen action only.
+In MAB, the gambler has no information at all to make a decision.  _APP_ differs from MAB because we have some information available to the _APP_, which is the context. In the Contextual Bandit problem, a learner (the gambler in the hypothetical experiment) repeatedly observes a context, chooses an action, and observes a loss/cost/reward for the chosen action only.
 
 ### Policy vs. model
-We use the term _policy_ many times in this tutorial. In Reinforcement Learning (RL),  policy is roughly equivalent to _model_.
+We use the term _policy_ many times in this tutorial. In Reinforcement Learning (RL), the policy is roughly equivalent to _model_.
 
-In machine learning, model means _learned function_. When someone says policy, it is more specific than model because it indicates this is a model that acts in the world.
+In machine learning, the model means _learned function_. When someone says policy, it is more specific than model because it indicates this is a model that acts in the world.
 
-The contexts and actions are usually represented as feature vectors in CB algorithms. For example, _APP_ chooses actions by applying a policy **π** that takes a context as input and returns an action. The goal is to find a policy that maximizes average reward over a sequence of interactions.
+The contexts and actions represent feature vectors in CB algorithms. For example, _APP_ chooses actions by applying a policy **π** that takes a context as input and returns an action. The goal is to find a policy that maximizes the average reward over a sequence of interactions.
 
 ## Working with CB in Vowpal Wabbit
 
-In this section we go over different CB functionalities offered by VW, understand how to format data and understand the results.
+In this section, we go over different CB functionalities offered by VW, understand how to format data, and understand the results.
 
-### Specifying CB approach
+### Specifying the CB approach
 
 Multiple policy evaluation approaches are used to optimize a policy. VW offers four approaches to  specify CB approach using `--cb_type`:
 
@@ -88,7 +93,7 @@ VW offers five exploration algorithms:
 
 >**Note:** For more details on CB algorithms in VW, please refer to the <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Contextual-Bandit-algorithms" target="_blank">Vowpal Wabbit Github Wiki</a>.
 
-## Contextual Bandit algorithms and input format
+## Contextual Bandit algorithms and input formats
 
 There are four main components to a Contextual Bandit problem:
 
@@ -97,14 +102,13 @@ There are four main components to a Contextual Bandit problem:
 - **Probability (p)**: the probability of choosing _a_ from _A_.
 - **Cost/Reward (r)**: the reward received for action _a_.
 
-Vowpal Wabbit provides three different CB algorithm classifications:
+Vowpal Wabbit provides three CB algorithms:
 
-* **`--cb`:** CB module which allows you to optimize predictor based on already collected CB data, CB without exploration
-* **`--cb_explore`:** CB learning algorithm for when the maximum number of actions is known ahead of time and semantics of actions stays the same across examples
-*  **`--cb_explore_adf`:** CB learning algorithm for when the set of actions changes over time or we have rich information for each actionVW offers different input formats for CB.
+* **`--cb`:** The CB module which allows you to optimize predictor based on already collected CB data, CB without exploration
+* **`--cb_explore`:** The CB learning algorithm for when the maximum number of actions is known ahead of time and semantics of actions stays the same across examples
+*  **`--cb_explore_adf`:** The CB learning algorithm for when the set of actions changes over time or we have rich information for each action VW offers different input formats for CB.
 
-
-####  Input format for `--cb` classification
+### Input format for `--cb`
 
 `--cb <number_of_actions>`
 
@@ -114,9 +118,6 @@ Each example is represented as a separate line in your data file and must follow
 ```
 action:cost:probability | features
 ```
-
->**Note:** The format of the **left side** of the `|` line in the above example is different than Linear Regression tutorial. CB uses a different label type for the data input format than linear regression. The format is the same on the **right side** of the `|` line and in this case they are specified by the context _x_.
-
 Sample data file **train.dat** with five examples:
 ```
 1:2:0.4 | a c
@@ -130,7 +131,7 @@ Use the command `./vw -d train.dat --cb 4`
 
 >**Note:** This usage is for the VW command line. See below for a Python tutorial.
 
-#### Input format for `--cb_explore` classification
+### Input format for `--cb_explore`
 
 `--cb_explore <number_of_actions>`
 
@@ -138,37 +139,40 @@ The command `--cb_explore 4` specifies our examples explore a total of four acti
 
 >**Note:** This format explores the action space so you must **specify** which algorithm you want to use for exploration.
 
-The example format is same as in the case of `--cb`
+>**Note:** The following example format is the same as in the case of `--cb`
 
 Usage:
 - `./vw -d train.dat --cb_explore 4 --first 2`
-  - In this case, on the first two actions, we take each of the 4 actions with probability 1/4.
+  - In this case, on the first two actions, you take each of the four actions with probability 1/4.
 - `./vw -d train.dat --cb_explore 4 --epsilon 0.2`
-  - In this case, the prediction of the current learned policy is taken with probability 1 - _epsilon_ (i.e. 80% of the time) and with the remaining (i.e. 20%) epsilon probability an action is chosen uniformly at random.
+  - In this case, the prediction of the current learned policy takes with probability 1 - _epsilon_ 80% of the time, and with the remaining 20% epsilon probability, an action is chosen uniformly at random.
 - `./vw -d train.dat --cb_explore 4 --bag 5`
-  - In this case, we use an ensemble approach. We take an argument _m_ for `--bag` and train _m_ different policies, i.e. 5 in the above example. The policies differ because they are being trained on different subsets of data, with each example going to a subset of the _m_ policies.
+  - In this case, you use an ensemble approach. Take an argument _m_ for `--bag` and train _m_ different policies, i.e., 5 in the above example. The policies differ because they train on different subsets of data, with each example going to a subset of the _m_ policies.
 - `./vw -d train.dat --cb_explore 4 --cover 3`
-  - In this case, similar to bagging _m_ different policies are trained but unlike bagging the training of these policies is explicitly optimized to result in a diverse set of predictions, choosing all the actions which are not already learned to be bad in a given context. This is a _theoretically optimal_ exploration algorithm. If you are curious to learn more, you can read more about it in this <a href="http://arxiv.org/abs/1402.0555" target="_blank">paper</a>.
+  - In this case, similar to bagging _m_ different policies are trained but unlike bagging the training of these policies is explicitly optimized to result in a diverse set of predictions, choosing all the actions which are not already learned to be bad in a given context.
 
-#### Input format for `--cb_explore_adf` classification
+  This algorithm is a _theoretically optimal_ exploration algorithm.Read more about it in this <a href="http://arxiv.org/abs/1402.0555" target="_blank">paper</a>.
+
+### Input format for `--cb_explore_adf`
 
 `--cb_explore_adf`
 
-The command `--cb_explore_adf` is a different from the other two example cases because the action set changes over time (or we have rich information for each action). It best to create features for every (context, action) pair rather than features associated only with context and shared across all actions.
+The command `--cb_explore_adf` is different from the other two example cases because the action set changes over time (or we have rich information for each action). It best to create features for every (context, action) pair rather than features associated only with context and shared across all actions.
 
 >**Note:** This format explores the action space so you must **specify** which algorithm you want to use for exploration.
 
 More details on this input format:
+
 - Each example now spans multiple lines, with one line per action
 - For each action, we have the label information (action, cost, probability), if known.
-- The action field _a_ is ignored now since actions are identified by line numbers, and typically set to the 0.
+- The action field _a_ is ignored now since line numbers identify actions and typically set to the 0.
 - The semantics of cost and probability are the same as before.
 - Each example is also allowed to specify the label information on precisely one action.
-- A newline signals end of a multiline example.
+- A new line signals end of a multiline example.
+
 #### Shared contextual features
 
-
-You can specify contextual features which are shared across all actions in a line at the beginning of an example, which always has a `shared` label, as in the second multiline example below.
+You can specify contextual features which share all line actions at the beginning of an example, which always has a `shared` label, as in the second multiline example below.
 
 Since the shared line is not associated with any action, it should never contain the label information.
 
@@ -181,14 +185,17 @@ shared | s_1 s_2
 0:1.0:0.5 | a:1 b:1 c:1
 | a:0.5 b:2 c:1
 ```
-In the first example above, we have two actions, one line for each. The first line represents the first action and it has two action dependent features _a_ and _b_. The second line represents the second action and it has three action dependent features _a_, _b_ and _c_. The second action was the chosen action for the example and it follows the format
+In the first example, we have two actions, one line for each. The first line represents the first action, and it has two action dependent features _a_ and _b_.
+
+The second line represents the second action, and it has three action dependent features _a_, _b_, and _c_. The second action was the chosen action for the example, and it follows the following format:
+
 ```
 action:cost:probability | features
 0:0.1:0.75 |
 ```
-Action 0 is ignored, has cost 0.1 and probability of 0.75.
+Action 0 is ignored, has cost 0.1 and a probability of 0.75.
 
-Usage:
+**Usage:**
 
 - `./vw -d train_adf.dat --cb_explore_adf`
 - `./vw -d train.dat --cb_explore_adf --first 2`
@@ -196,28 +203,30 @@ Usage:
 - `./vw -d train.dat --cb_explore_adf --bag 5`
 - `./vw -d train.dat --cb_explore_adf --softmax --lambda 10`
 
-In the case of the softmax explorer, which uses the policy to not only predict an action but also predict a score indicating the quality of each action. A distribution is then created with the probability of action a being is proportional to exp(lambda*score(x,a)).
+In the case of the softmax explorer, which uses the policy not only to predict an action but also predict a score indicating the quality of each action. The probability of action _a_ creates distribution proportional to exp(lambda*score(x,a)).
 
-Here lambda is a parameter, which leads to uniform exploration for lambda = 0, and stops exploring as lambda approaches infinity. In general, this provides another nice knob for controlled exploration based on the uncertainty in the learned policy.
+Here lambda is a parameter, which leads to uniform exploration for lambda = 0, and stops exploring as lambda approaches infinity. In general, this provides an excellent knob for controlled exploration based on the uncertainty in the learned policy.
 
-## Tutorial: create a small data-set
+## Create Contextual Bandit test data
 
-### Set-up
-**Load** required packages
+Begin by loading the required packages:
+
 ```python
 import pandas as pd
 import sklearn as sk
 import numpy as np
 ```
 
-**Install** [Vowpal Wabbit Python package](https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/python)
+Install [Vowpal Wabbit Python package](https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/python):
+
 ```sh
 pip install boost
 apt-get install libboost-program-options-dev zlib1g-dev libboost-python-dev -y
 pip install vowpalwabbit
 ```
 
-**Generate** sample training data that could originate from previous random trial, e.g. AB test, for the CB to explore. The data here is equivalent to the <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Logged-Contextual-Bandit-Example" target="_blank">VW wiki example</a>.
+Generate sample training data that could originate from previous random trial, e.g. AB test, for the CB to explore:
+
 ```python
 train_data = [{'action': 1, 'cost': 2, 'probability': 0.4, 'feature1': 'a', 'feature2': 'c', 'feature3': ''},
               {'action': 3, 'cost': 0, 'probability': 0.2, 'feature1': 'b', 'feature2': 'd', 'feature3': ''},
@@ -232,7 +241,10 @@ train_df['index'] = range(1, len(train_df) + 1)
 train_df = train_df.set_index("index")
 ```
 
-**Generate** some test data that you want the CB to make decisions for, e.g. features describing new users, for the CB to exploit.
+>**Note:** The data here is equivalent to this <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Logged-Contextual-Bandit-Example" target="_blank">VW wiki example</a>.
+
+Create test data, for example features describing new users, for the CB to exploit to make decisions:
+
 ```python
 test_data = [{'feature1': 'b', 'feature2': 'c', 'feature3': ''},
             {'feature1': 'a', 'feature2': '', 'feature3': 'b'},
@@ -246,25 +258,30 @@ test_df['index'] = range(1, len(test_df) + 1)
 test_df = test_df.set_index("index")
 ```
 
-Dataframes
+Your dataframes are:
+
 ```python
 train_df.head()
 
 test_df.head()
 ```
 
-###  CB Python model
+###  Contextual Bandits Python tutorial
 
-1. First, create the Python model - this stores the model parameters in the Python `vw` object. Here we use arguments for a Contextual Bandit with four possible actions.
+First, create the Python model store the model parameters in the Python `vw` object.
+
+Use arguments for a Contextual Bandit with four possible actions.
+
 ```python
 from vowpalwabbit import pyvw
 
 vw = pyvw.vw("--cb 4")
 ```
+
 >**Note:** You can pass `--quiet` if you want vw to stop talking while it's working.
 
+Now, for each trained example we call learn on our vw model.
 
-2. Next, for each train example we call learn on our vw model.
 ```python
 for i in train_df.index:
   action = train_df.loc[i, "action"]
@@ -281,7 +298,10 @@ for i in train_df.index:
   vw.learn(learn_example)
 ```
 
-3. Now, use the model that was just trained on the train set to perform predictions on the test set. **Construct** the example as before but don't include the label and pass it into predict instead of learn.
+Use the model that was just trained on the train set to perform predictions on the test set.
+
+Construct the example as before but don't include the label and pass it into predict instead of learn.
+
 ```python
 for j in test_df.index:
   feature1 = test_df.loc[j, "feature1"]
@@ -293,9 +313,11 @@ for j in test_df.index:
   choice = vw.predict(test_example)
   print(j, choice)
 ```
+
 >**Note:** The CB assigns every instance to the third action as it should per the cost structure of the train data. You can save and load the model you train from a file.
 
-4. Finally, experiment with the cost structure to see that the CB updates its predictions accordingly. The `-i` argument means input regressor, telling VW to load a model from that file instead of starting from scratch.
+Finally, experiment with the cost structure to see that the CB updates its predictions accordingly.
+
 ```python
 vw.save('cb.model')
 del vw
@@ -304,11 +326,11 @@ vw = pyvw.vw("--cb 4 -i cb.model")
 print(vw.predict('| a b'))
 ```
 
-## Next steps
+The `-i` argument means input regressor, telling VW to load a model from that file instead of starting from scratch.
+
+## More to explore
 
 - Look through <a href="https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/python/examples" target="_blank">example Python notebooks</a>
 - Explore more content in the <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Tutorial#more-tutorials" target="_blank">tutorials section of the GitHub wiki</a>
 - Browse <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Examples" target="_blank">examples on the GitHub wiki</a>
 - Check out the various <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Command-Line-Arguments" target="_blank">command line options of VW</a>
-
-Have fun exploring VW!
