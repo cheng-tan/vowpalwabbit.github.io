@@ -8,7 +8,7 @@ show_on_learn: false
 layout: tutorial
 body_class: tutorial
 resource_icon: /svg/resources/guide.svg
-
+---
 # Contextual Bandits and Vowpal Wabbit
 
 This guide describes how to run Contextual Bandits (CB) algorithms in Vowpal Wabbit (VW). It features an overview of CB algorithms, when to use them, and a Python tutorial with examples. The goal is to empower you to explore and experiment with CB algorithms to create your own models in VW.
