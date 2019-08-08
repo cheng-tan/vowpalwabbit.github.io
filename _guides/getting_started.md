@@ -16,7 +16,7 @@ This guide describes how to run Linear Regression (LR) algorithms in Vowpal Wabb
 
 ## Getting started with Vowpal Wabbit
 
-To install VW—and for more information on building VW from source or using a package manager—see [Getting started](https://github.com/VowpalWabbit/vowpal_wabbit/wiki/) guide. Use this [Tutorial](https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Tutorial) for a step-by-step guide to VW commands if you are ready to jump in.
+To install VW—and for more information on building VW from source or using a package manager—see [Getting started](https://github.com/VowpalWabbit/vowpal_wabbit/wiki/) guide.
 
 >**Note:** The CB tutorial uses [Vowpal Wabbit Python package](https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/python). VW is supported in C++ and C#, and additional binary packages are available for select platforms. See [Getting started](https://cheng-tan.github.io/vowpalwabbit.github.io/) module on the homepage for more information.
 
