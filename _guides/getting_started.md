@@ -38,10 +38,10 @@ Vowpal Wabbit hashes feature names into in-memory indexes by default unless the 
 0 | price:.23 sqft:.25 age:.05 2006
 ```
 
--The first number in each line is a label. 
--A `0` label corresponds to no roof-replacement, while a `1` label corresponds to a roof-replacement. 
--The bar `|` separates label related data (what we want to predict) from features (what we always know). 
--The features in the first line are `price`, `sqft`, `age`, and `2006`. Each feature may have an optional `:<numeric_value>` following it or, if the value is missing, an implied value of `1`. 
+- The first number in each line is a label. 
+- A `0` label corresponds to no roof-replacement, while a `1` label corresponds to a roof-replacement. 
+- The bar `|` separates label related data (what we want to predict) from features (what we always know). 
+- The features in the first line are `price`, `sqft`, `age`, and `2006`. Each feature may have an optional `:<numeric_value>` following it or, if the value is missing, an implied value of `1`. 
 
 The label information for the second line is more complex than the first: 
 
@@ -62,8 +62,8 @@ Next, we learn:
 ```sh
 vw house_dataset
 ```
+The output for this command is:
 
-Output:
 ```
 Num weight bits = 18
 learning rate = 0.5
@@ -72,10 +72,10 @@ power_t = 0.5
 using no cache
 Reading datafile = house_dataset
 num sources = 1
-average  since         example        example  current  current  current
-loss     last          counter         weight    label  predict features
-0.000000 0.000000            1            1.0   0.0000   0.0000        5
-0.666667 1.000000            2            3.0   1.0000   0.0000        5
+average since  example example current current current
+loss  last  counter weight label predict features
+0.000000 0.000000      1 1.0 0.0000 0.0000    5
+0.666667 1.000000      2 3.0 1.0000 0.0000    5
 
 finished run
 number of examples = 3
@@ -86,64 +86,139 @@ best constant = 0.500000
 best constant's loss = 0.250000
 total feature number = 15
 ```
-## VW's diagnostic information
+## Vowpal Wabbit diagnostics
 
-There is a burble of diagnostic information which you can turn off with `--quiet`. However, it's worthwhile to first understand it, so let's work through it bit by bit.
+This section provides information on the various types of diagnostic information VW presents.
+
+**Use** `--quiet`  command to turn off diagnostic information in Vowpal Wabbit.
+
+### Hash function bits
+
+The following code sample shows the number hash function bits:
 
 ```
 Num weight bits = 18
 ```
-Only 18 bits of the hash function will be used. That's much more than necessary for this example. You could adjust the number of bits using `-b bits`
+
+This diagnostic shows that the number of hash function bits is 18 (more than enough for this example). Use `-b bits` to adjust the number of bits for a hash function.
+
+### Learning rate
+
+The following code sample shows the learning rate:
 
 ```
 learning rate = 0.5
 ```
-The default learning rate is 0.5 which we found to be a good default with the current default update (`--normalized --invariant --adaptive`). If the data is noisy you'll need a larger data-set and/or multiple passes to predict well. On these larger data-sets, our learning rate will by default decay towards 0 as we run through examples. You can adjust the learning rate up or down with `-l rate`. A higher learning rate will make the model converge faster but a too high learning rate may over-fit and end-up worse on average.
+
+The default learning rate is `0.5` with current default update (`--normalized --invariant --adaptive`). 
+
+If the data is noisy, you need a larger data-set or multiple passes to predict well. For massive data-sets, the learning rate decays to `0` by default. 
+
+**Use** `-l rate` to adjust the learning rate up or down.
+
+.**Note:** A high learning rate makes the model converge faster than a low learning rate, but if you adjust the learning rate too high, you risk over-fit and end-up worse on average.
+
+### Learning rate decay
+
+The following code sample shows the initial time:
 
 ```
 initial_t = 0
 ```
-Learning rates should often decay over time, and this specifies the initial time. You can adjust with `--initial_t time`, although this is rarely necessary these days.
+
+This diagnostic specifies the initial time or duration for learning rate decay. 
+
+**Use** `--initial_t time` to adjust the initial time. 
+
+>**Note:** It is not common to adjust the initial time in Vowpal Wabbit
+
+### Learning rate decay power
+
+The following code sample shows the power of learning rate decay:
 
 ```
 power_t = 0.5
 ```
-This specifies the power on the learning rate decay. You can adjust this `--power_t p` where _p_ is in the range [0,1]. 0 means the learning rate does not decay, which can be helpful when state tracking, while 1 is very aggressive, but plausibly optimal for [IID](https://en.wikipedia.org/wiki/Independent_and_identically_distributed_random_variables) data-sets. 0.5 is a minimax optimal choice. A different way of stating this is: stationary data-sets where the fundamental relation between the input features and target label are not changing over time, should benefit from a high (close to 1.0) `--power_t` while learning against changing conditions, like learning against an adversary who continuously changes the rules-of-the-game, would benefit from low (close to 0) `--power_t` so the learner can react quickly to these changing conditions. For many problems, 0.5, which is the default, seems to work best.
+
+This diagnostic specifies the power of learning rate decay. The VW default is `0.5` and works well for most problems. 
+
+The `0.5` default is a minimax optimal choice for stationary data-sets where the fundamental relation between the input features and target label do not change over time and benefit from a high (close to 1.0) `--power_t` while learning against changing conditions. 
+
+Conditions like learning against an adversary who continuously changes the rules-of-the-game, benefit from low (close to 0) `--power_t` so the learner can react quickly to these changing conditions. 
+
+**Use** `--power_t p` to adjust learning rate decay—where _p_ is in the range [0,1]. 
+
+- `0` means the learning rate does not decay, which can be helpful when state tracking.
+- `1` is aggressive, but plausible if a data-set represents a collection of random variables is [independent and identically distributed (IID)(https://en.wikipedia.org/wiki/Independent_and_identically_distributed_random_variables).
+
+### Cache files
+
+The following code sample shows that you are not using a cache file: 
 
 ```
 using no cache
 ```
-This says you are not using a cache. If you use multiple passes with `--passes`, you would need to also pass `-c` so VW can cache the data in a faster to handle format (passes > 1 should be much faster). By default, the cache file name will be the data-set file with `.cache` appended. In this case: `house_dataset.cache`. You may also override the default cache file name by passing: `--cache_file housing.cache`. A cache file can greatly speed up training when you run many experiments (with different options) on the same data-set even if each experiment is only a single pass. So if you want to experiment with the same data-set over and over, it is highly recommended to pass `-c` every time you train. If the cache exists and is newer than the data-set, it will be used, if it doesn't exist, it'll be created the first time `-c` is used.
+
+A cache file speeds up training when you run many experiments (with different options) on the same data-set—even if each experiment is only a single pass. 
+
+The default cache file name is the data-set file name with `.cache` appended. For example, `house_dataset.cache`. 
+
+**Use** `--cache_file housing.cache` to override the default cache file name. 
+
+The first time you use `-c` you create a cache file. If the cache already exists and it is newer than the data-set, that is the default cache.  
+
+**Use** `-c` for multiple passes `--passes`, so VW caches the data in a faster format (passes > 1 should be much faster).  
+
+>**Note:** If you want to experiment with the same data-set over and over, it is highly recommended to pass `-c` every time you train.
+
+### Data sources 
+
+The following code sample shows the source of data: 
 
 ```
 Reading datafile = house_dataset
 ```
-There are many different ways to input data to VW. Here we're just using a simple text file and VW tells us the source of the data. Alternative sources include cache files (from previous VW runs), stdin, or a tcp socket.
+
+VW supports a variety of different input methods. This example uses a simple text file, and VW displays a diagnostic with the source of the data. 
+
+Alternative data sources include _cache files_ (from previous VW runs), _stdin_, or a _tcp socket_.
+
+### Number of data sources
+
+The following code sample shows the number of data sources:
 
 ```
 num sources = 1
 ```
-There is only one input file in our example. But you can specify multiple files.
 
+There is only one input file in this example. You can specify multiple files in VW.
 
-Next, there is a bunch of header information. VW is going to print out some live diagnostic information.
+## Vowpal Wabbit diagnostic header
+
+Next, VW shows you some diagnostic information in the header.
 
 ```
-average  since         example        example  current  current  current
-loss     last          counter         weight    label  predict features
-0.000000 0.000000            1            1.0   0.0000   0.0000        5
-0.666667 1.000000            2            3.0   1.0000   0.0000        5
+average since  example example current current current
+loss  last  counter weight label predict features
+0.000000 0.000000      1 1.0 0.0000 0.0000    5
+0.666667 1.000000      2 3.0 1.0000 0.0000    5
 ```
 
-- `average loss` computes the <a href="http://hunch.net/~jl/projects/prediction_bounds/progressive_validation/coltfinal.pdf" target="_blank">progressive validation</a> loss. The critical thing to understand here is that progressive validation loss deviates like a test set, and hence is a reliable indicator of success on the first pass over any data-set.
-- `since last` is the progressive validation loss since the last printout.
-- `example counter` tells you which example is printed out. In this case, it's example 2.
-- `example weight` tells you the sum of the importance weights of examples seen so far. In this case it's 3, because the second example has an importance weight of 2.
-- `current label` tells you the label of the second example.
-- `current predict` tells you the prediction (before training) on the current example.
-- `current features` tells you how many features the current example has. This is great for debugging, and you'll note that we have 5 features when you expect 4. This happens, because VW has a default constant feature which is always added in. Use the `--noconstant` command-line option to turn it off.
+- **`average loss`** computes the <a href="http://hunch.net/~jl/projects/prediction_bounds/progressive_validation/coltfinal.pdf" target="_blank">progressive validation</a> loss. Progressive validation loss deviates like a test set, and hence is a reliable indicator of success on the first pass over any data-set.
+- **`since last`** is the progressive validation loss since the last printout.
+- **`example counter`** indicates which example is printed out. In this case,  example `2`.
+- **`example weight`** is the sum of the importance weights of examples so far. In this case, it's `3.0`, because the second example has an importance weight of `2`.
+- **`current label`** is the label of the second example.
+- **`current predict`** is the prediction (before training) on the current example.
+- **`current features`** is the number of features in the current example.
 
-VW prints a new line with an exponential backoff. This is very handy, because often you can debug some problem before the learning algorithm finishes going through a data-set.
+The `current features` diagnostic is excellent for debugging. Note that we have five features when you expect four. This change happens because VW always adds a default _constant feature_.
+
+**Use** `--noconstant` the default constant feature off in VW. 
+
+## Vowpal Wabbit debugging diagnostics 
+
+Now, VW prints a new line with an exponential backoff. This information is useful for debugging problems before the learning algorithm finishes with a data-set:
 
 ```
 finished run
@@ -155,8 +230,10 @@ best constant = 0.500000
 best constant's loss = 0.250000
 total feature number = 15
 ```
-At the end, some more straightforward totals are printed. The only mysterious one is:
-`best constant` and `best constant's loss` These really only work if you are using squared loss, which is the default. They compute the best constant's predictor and the loss of the best constant predictor. If `average loss` is not better than `best constant's loss`, something is wrong. In this case, we have too few examples to generalize.
+
+The `best constant` and `best constant's loss` only work if you are using squared loss. Squared loss is the default for VW. They compute the best constant's predictor and the loss of the best constant predictor. 
+
+If `average loss` is not better than `best constant's loss`, something is wrong. In this case, we have too few examples to generalize.
 
 If we want to overfit like mad, we can simply use:
 
