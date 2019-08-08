@@ -63,7 +63,7 @@ We use the term _policy_ many times in this tutorial. In Reinforcement Learning 
 
 In machine learning, the model means _learned function_. When someone says policy, it is more specific than model because it indicates this is a model that acts in the world.
 
-The contexts and actions represent feature vectors in CB algorithms. For example, _APP_ chooses actions by applying a policy **π** that takes a context as input and returns an action. The goal is to find a policy that maximizes the average reward over a sequence of interactions.
+The contexts and actions are typically represented as feature vectors in CB algorithms. For example, _APP_ chooses actions by applying a policy **π** that takes a context as input and returns an action. The goal is to find a policy that maximizes the average reward over a sequence of interactions.
 
 ## Working with CB in Vowpal Wabbit
 
