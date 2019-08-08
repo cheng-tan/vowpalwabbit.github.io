@@ -235,110 +235,151 @@ The `best constant` and `best constant's loss` only work if you are using square
 
 If `average loss` is not better than `best constant's loss`, something is wrong. In this case, we have too few examples to generalize.
 
-If we want to overfit like mad, we can simply use:
+If you want to overfit, use the following:
 
 ```sh
 vw house_dataset -l 10 -c --passes 25 --holdout_off
 ```
 
-The progress section of the output is:
+Now, the progress section of the output looks like this:
+
 ```
-average  since         example        example  current  current  current
-loss     last          counter         weight    label  predict features
-0.000000 0.000000            1            1.0   0.0000   0.0000        5
-0.666667 1.000000            2            3.0   1.0000   0.0000        5
-0.589385 0.531424            5            7.0   1.0000   0.2508        5
-0.378923 0.194769           11           15.0   1.0000   0.8308        5
-0.184476 0.002182           23           31.0   1.0000   0.9975        5
-0.090774 0.000000           47           63.0   1.0000   1.0000        5
+average since  example example current current current
+loss  last  counter weight label predict features
+0.000000 0.000000      1 1.0 0.0000 0.0000    5
+0.666667 1.000000      2 3.0 1.0000 0.0000    5
+0.589385 0.531424      5 7.0 1.0000 0.2508    5
+0.378923 0.194769     11 15.0 1.0000 0.8308    5
+0.184476 0.002182     23 31.0 1.0000 0.9975    5
+0.090774 0.000000     47 63.0 1.0000 1.0000    5
 ```
 
-You'll notice that by example 47 (25 passes over 3 examples result in 75 examples), the `since last` column has dropped to 0, implying that by looking at the same (3 lines of) data 25 times we have reached a perfect predictor. This is unsurprising with 3 examples having 5 features each. The reason we have to add `--holdout_off` is that when running multiple-passes, VW automatically switches to 'over-fit avoidance' mode by holding-out 10% of the examples (the period "one in 10" can be changed using `--holdout_period period`) and evaluating performance on the held-out data instead of using the online-training progressive loss.
+Notice that the `since last` data dropped to `0` on line six, `example 47` (25 passes over 3 examples result in 75 examples). This result implies that, by looking at the same 3 lines of data 25 times, we reached a _perfect predictor_. Not surprising, given that with three examples and five features for each example. 
 
-## Saving your model (a.k.a. regressor) into a file
+>**Note:** You have to add `--holdout_off` when running multiple-passes. VW automatically switches to _over-fit avoidance_ mode by holding 10% of the examples and evaluating performance on the data being held instead of using online training progressive loss algorithms.
 
-By default VW learns the weights of the features and keeps them in an in memory vector. If you want to save the final regressor weights into a file, add `-f filename`:
+**Use** `--holdout_period period` to change the one in 10 default holdout in VW.
+
+## Saving regressor model files
+
+Vowpal Wabbit learns the weights of the features and keeps them in an _in-memory vector_ by default. 
+
+**Add** `-f filename` to create and save the final regressor file. For example:
 
 ```sh
 vw house_dataset -l 10 -c --passes 25 --holdout_off -f house.model
 ```
 
-## Getting predictions
+## Make predictions with Vowpal Wabbit 
 
-We want to make predictions of course, this can be done by supplying the `-p filename` option. Stdout can be used as below:
+You can make predictions in VW by supplying the `-p filename`. For example, using filename `stdout`:
 
 ```sh
 vw house_dataset -p /dev/stdout --quiet
 ```
 
-The output is:
+The output for this command is:
+
 ```
 0.000000
 0.000000 second_house
 1.000000 third_house
 ```
 
-- The 1st output line `0.000000` is for the 1st example which has an empty tag.
-- The 2nd output `0.000000 second_house` is for the 2nd example. You'll notice the tag appears here. This is the primary use of the tag: mapping predictions to the examples they belong to.
-- The 3rd output `1.000000 third_house` is for the 3rd example. Clearly, some learning happened, because the prediction is now `1.000000` while the initial prediction was set to `0.5`.
+- The first line, `0.000000` refers to the first example, which has an empty tag.
+- The second line, `0.000000 second_house` refers to the second example. Notice that the tag appears here. The primary use of the tag is mapping predictions to the corresponding examples.
+- The third output, `1.000000 third_house` refers to the third example. The initial prediction was set to `0.5`, and the prediction is now `1.000000`. This result means that _some_ learning occurred. 
 
-Note that in this last example, we predicted _while we learned_. The model was being incrementally built in memory as VW went over the examples.
+In the last example, the model was built in memory incrementally, as VW analyzed the examples. In other words, you predicted _while you learned_.
 
-Alternatively, and more commonly, we would first learn and save the model into a file. Later we would predict using the saved model.
+It is more common to learn first, then save the model file. Then, you make predictions using that saved model.
 
-You may load a initial model to memory by adding `-i house.model`. You may also want to specify `-t` which stands for "test-only" (do no learning):
+**Use:** `-i house.model` to load the initial model to memory. 
+
+**Add** `-t` to specify _test-only_ (do no learning). For example:
 
 ```sh
 vw -i house.model -t house_dataset -p /dev/stdout --quiet
 ```
 
-Which would output:
+The output for this command is:
+
 ```
 0.000000
 1.000000 second_house
 0.000000 third_house
 ```
 
-Obviously the results are different this time, because in the first prediction example, we learned as we went, and made only one pass over the data, whereas in the 2nd example we first loaded an over-fitted (25 pass) model and used our data-set `house_dataset` with `-t` (testing only mode). In real prediction settings, one should use a different data-set for testing vs training.
+The results are different for this example because the first prediction example made only one pass over the data, in other words, learning as it worked. 
 
-## Auditing
+For this example, you loaded the over-fitted model (25 passes) and used the `house_dataset` with `-t` (or _testing only_ mode). 
 
-When developing a new ML application, it's very helpful to debug. VW can help with this using the `--audit` option, which outputs extra informations about predictions and features.
+>**Note:** Always use a different data-set for testing vs. training for real prediction settings.
+
+## Auditing machine learning applications with Vowpal Wabbit
+
+VW has a built-in audit option that helps debug machine learning (ML) applications.
+
+**Use** `--audit` to output helpful information about predictions and features. For example: 
 
 ```sh
 vw house_dataset --audit --quiet
 ```
 
-Output:
+The output for this command is:
+
 ```
 0
-  price:229902:0.23:0@0  sqft:162853:0.25:0@0  age:165201:0.05:0@0  2006:2006:1:0@0  Constant:116060:1:0@0
+  price:229902:0.23:0@0 sqft:162853:0.25:0@0 age:165201:0.05:0@0 2006:2006:1:0@0 Constant:116060:1:0@0
 0 second_house
-  price:229902:0.18:0@0  sqft:162853:0.15:0@0  age:165201:0.35:0@0  1976:1976:1:0@0  Constant:116060:1:0@0
+  price:229902:0.18:0@0 sqft:162853:0.15:0@0 age:165201:0.35:0@0 1976:1976:1:0@0 Constant:116060:1:0@0
 1 third_house
-  price:229902:0.53:0.882655@0.2592  age:165201:0.87:0.453833@0.98  sqft:162853:0.32:1.05905@0.18  Constant:116060:1:0.15882@8  1924:1924:1:0@0
+  price:229902:0.53:0.882655@0.2592 age:165201:0.87:0.453833@0.98 sqft:162853:0.32:1.05905@0.18 Constant:116060:1:0.15882@8 1924:1924:1:0@0
 ```
 
-Every example uses two lines. The first line has the prediction, and the second line has one entry per feature. Looking at the first feature, we see:
+Each example uses two lines:
+
+- The first line is the prediction.
+- The second line shows one entry per feature. 
+
+VW has an advanced_namespaces_ feature that allows you to group features and operate them on-the-fly. Namespace options include the following: 
+
+- Use `-q XY` to cross a pair of namespaces.
+- Use `--cubic XYZ` to cross 3 namespaces.
+- Use `--lrq XYn` to low-rank quadratic interactions.
+- Use `--ignore X` to skip all features belonging to a namespace.
+
+The first feature listed in output above is:
 
 ```
 price:229902:0.23:0@0.25
 ```
 
-- `price` is the original feature name. If you use a namespace, it appears before `^` (i.e. `Namespace^Feature`). Namespaces are an advanced feature which allows you to group features and operate them on-the-fly, in the core of VW with the options: `-q XY` (cross a pair of namespaces), `--cubic XYZ` (cross 3 namespaces), `--lrq XYn` (low-rank quadratic interactions), and `--ignore X` (skip all features belonging to a namespace).
-- `229902` is the index of the feature, computed by a hash function on the feature name.
-- `0.23` is the value of the feature.
-- `0` is the value of the feature's weight.
-- `@0.25` represents the sum of gradients squared for that feature when you are using per-feature adaptive learning rates.
+For this feature, **`price`** is the original feature name. If you use a namespace, it appears before `^`. For example:
 
-Examining further, you'll notice that the feature `2006` uses the index 2006. This means that you may use hashes or pre-computed indices for features, as is common in other machine learning systems.
+`Namespace^Feature` 
 
-The advantage of using unique integer-based feature-names is that they are guaranteed not to collide after hashing. The advantage of free-text (non integer) feature names is readability and self-documentation. Since only `:`, `|`, and _spaces_ are special to the VW parser, you can give features extremely readable names like: `height>2 value_in_range[1..5] color=red` and so on. Feature names may even start with a digit, e.g.: `1st-guess:0.5 2nd-guess:3` etc.
+- **`229902`** is the index of the feature, computed by a hash function on the feature name.
+- **`0.23`** is the value of the feature.
+- **`0`** is the value of the feature's weight.
+- **`@0.25`** is the sum of gradients squared for that feature (when you use _per-feature adaptive learning rates_).
 
-## What's next?
+Notice that the feature `2006` uses the index 2006. Like other ML tools, you can use _hashes_ or _pre-computed indices_ for features in VW.
 
-The above only scratches the surface of VW. You can learn with other loss functions, with other optimizers, with other representations, with clusters of 1000s of machines, and even do ridiculously fast active learning.
+The advantage of using unique _integer-based feature names_ is that they are guaranteed not to collide after hashing. The advantage of _free-text (non-integer)_ feature names is readability and self-documentation. 
 
-- Learn about using VW to do reinforcement learning in the [Contextual Bandit tutorial]( {{ "guides/contextual_bandits.html" | relative_url}} )
-- Explore more content in the <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Tutorial#more-tutorials" target="_blank">tutorials section of the GitHub wiki</a>
-- Browse <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Examples" target="_blank">examples on the GitHub wiki</a>
+Because only `:`, `|`, and _spaces_ are special to the VW parser, you can give features easy-to-read names. For example:
+
+`height>2 value_in_range[1..5] color=red`
+
+You can use a digit to start feature names. For example: 
+
+`1st-guess:0.5 2nd-guess:3`
+
+## Next steps
+
+This guide only describes a fraction of Vowpal Wabbit’s capabilities. To explore more about VW features and performance—other loss functions, other optimizers, and other representations—including ridiculously fast active learning with clusters of 1000s of machines, see the following resources:
+
+- To learn about VW, Contextual Bandits, and reinforcement learning see the [Contextual Bandit tutorial]( {{ "guides/contextual_bandits.html" | relative_url}} )
+- To explore more VW tutorials see the <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Tutorial#more-tutorials" target="_blank">tutorials section of the GitHub wiki</a>
+- To browse examples of VW in aciton see <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Examples" target="_blank">examples on the GitHub wiki</a>
