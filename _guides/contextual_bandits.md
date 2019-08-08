@@ -12,7 +12,14 @@ resource_icon: /svg/resources/guide.svg
 
 # Contextual Bandits in VW
 
-The goal of this tutorial is to have you walk away with an understanding of Contextual Bandits, when CB can be used, how to run CB algorithms in Vowpal Wabbit (VW), and hopefully make you feel empowered and excited to use it on your own. This tutorial focuses on Python but VW is also supported in C++ and C#.
+This guide describes how to run Contextual Bandit (CB) algorithms in Vowpal Wabbit (VW). It features an overview of CB algorithms, when to use them, and a Python tutorial with examples. The goal is to empower you to explore and experiment with CB algorithms and create models in VW.
+
+## Getting started with Vowpal Wabbit
+
+To install VW—and for more information on building VW from source or using a package manager—see [Getting started](https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Getting-started) guide. 
+
+>**Note:** The CB tutorial uses [Vowpal Wabbit Python package](https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/python). VW is supported in C++ and C#, and additional binary packages are available for select platforms. See [Getting started](https://cheng-tan.github.io/vowpalwabbit.github.io/) module on the homepage for more information.
+
 
 ## What is a Contextual Bandit?
 
@@ -57,7 +64,7 @@ Having said that, we have tried to summarize as much as we can in this tutorial 
 
 ## VW CB functionalities
 
-In this section we go over different CB functionalities offered by VW, understand how to format data and understand the results.
+The contexts and actions are typically represented as feature vectors in CB algorithms. For example, _APP_ chooses actions by applying a policy **π** that takes a context as input and returns an action. The goal is to find a policy that maximizes the average reward over a sequence of interactions.
 
 ### Specifying CB approach
 
