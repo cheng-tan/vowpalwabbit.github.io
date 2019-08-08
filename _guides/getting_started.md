@@ -95,7 +95,7 @@ This section provides information on the various types of diagnostic information
 
 ### Hash function bits
 
-The following code sample shows the number hash function bits:
+The following output sample shows the number of bits from the hash function:
 
 ```
 Num weight bits = 18
