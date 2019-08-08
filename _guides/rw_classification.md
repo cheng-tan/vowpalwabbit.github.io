@@ -12,4 +12,4 @@ resource_icon: /svg/resources/guide.svg
 ---
 
 
-Classification for the rela world!
+Classification for the real world!
