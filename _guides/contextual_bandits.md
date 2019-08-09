@@ -22,11 +22,11 @@ To install VW—and for more information on building VW from source or using a p
 
 ## What is a Contextual Bandit?
 
-Bandit algorithms aid decision-making by making smarter choices in dynamic environments where options change rapidly, and the set of available actions is limited. Contextual Bandits are algorithms that use additional information (or context) to make better decisions when choosing actions.
+Contextual Bandits are algorithms that use additional information (or context) to make better decisions when choosing actions. Bandit algorithms aid decision-making by making smarter choices in dynamic environments where options change rapidly, and the set of available actions is limited. 
 
-### Contextual Bandit example
+### Contextual Bandits: Learn by example
 
-For this example, we use a hypothetical application called _APP_. This application interacts with the context of a user's behavior (search history, visited pages, or geolocation) in a dynamic environment–such as a news website or a cloud controller.
+For the purposes of introducing you to CB algorithms, this guide uses a hypothetical application called _APP_. This application interacts with the context of a user's behavior (search history, visited pages, or geolocation) in a dynamic environment–such as a news website or a cloud controller.
 
 _APP_ performs the following functions:
 
@@ -50,15 +50,16 @@ _APP_ news website:
   - **Actions:** time in minutes - {1 ,2 , ...N}
   - **Reward:** - the total downtime
 
-
-We want  _APP_ to take actions that provide the highest possible reward. In machine learning parlance, we want a _model_ that tells us which action to take. This scenario is similar to a traditional Multi-Armed Bandit (MAB) problem.
+You want  _APP_ to take actions that provide the highest possible reward. In machine learning parlance, we want a _model_ that tells us which action to take. This scenario is similar to a traditional Multi-Armed Bandit (MAB) problem.
 
 ### Multi-Armed Bandit
-The term _Multi-Armed Bandit (MAB)_ problem comes from a hypothetical experiment where a gambler must choose between multiple slot machine (_one-armed bandits_) actions, each with an unknown payout. The goal is to maximize the payout by optimally choosing the best actions when odds and payouts are unknown.
 
-In MAB, the gambler has no information at all to make a decision.  _APP_ differs from MAB because we have some information available to the _APP_, which is the context. In the Contextual Bandit problem, a learner (the gambler in the hypothetical experiment) repeatedly observes a context, chooses an action, and observes a loss/cost/reward for the chosen action only.
+The term _Multi-Armed Bandit (MAB)_ comes from a hypothetical experiment where a gambler must choose between multiple slot machine (_one-armed bandits_) actions, each with an unknown payout. The goal is to maximize the payout by optimally choosing the best actions when odds and payouts are unknown.
+
+In MAB, the gambler has no information at all to make a decision. The_APP_ differs from MAB because you have some information available to the _APP_, which is the context. In the Contextual Bandit problem, a learner (the gambler in the hypothetical experiment) repeatedly observes a context, chooses an action, and observes a loss/cost/reward for the chosen action only.
 
 ### Policy vs. model
+
 We use the term _policy_ many times in this tutorial. In Reinforcement Learning (RL), the policy is roughly equivalent to _model_.
 
 In machine learning, the model means _learned function_. When someone says policy, it is more specific than model because it indicates this is a model that acts in the world.
