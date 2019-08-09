@@ -12,13 +12,13 @@ resource_icon: /svg/resources/guide.svg
 
 # Contextual Bandits and Vowpal Wabbit
 
-This guide describes how to use Contextual Bandit (CB) algorithms in Vowpal Wabbit (VW). It features a Python tutorial and an overview of CB algorithms—including when to use them, how to work with with different CB approaches, how to format test data, and understand the results. The goal is to empower you to explore and experiment with CB algorithms and create models in VW.
+This guide describes how to use Contextual Bandit (CB) algorithms in Vowpal Wabbit (VW). It features a Python tutorial and an overview of CB algorithms—including when to use them, how to work with with different CB approaches, how to format test data, and understand the results. 
 
 ## Getting started with Vowpal Wabbit
 
 To install VW—and for more information on building VW from source or using a package manager—see [Getting started](https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Getting-started) guide. 
 
->**Note:** The CB tutorial uses [Vowpal Wabbit Python package](https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/python). VW is supported in C++ and C#, and additional binary packages are available for select platforms. See [Getting started](https://cheng-tan.github.io/vowpalwabbit.github.io/) module on the homepage for more information.
+>**Note:** The CB tutorial uses [Vowpal Wabbit Python package](https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/python). Additional binary packages are available for select platforms. See [Getting started](https://cheng-tan.github.io/vowpalwabbit.github.io/) module on the homepage for more information.
 
 ## What is a Contextual Bandit?
 
@@ -297,7 +297,7 @@ from vowpalwabbit import pyvw
 vw = pyvw.vw("--cb 4")
 ```
 
->**Note:** Use `--quiet` command if you want to stop VW diagnostics while you work.
+>**Note:** Use `--quiet` command to turn off diagnostic information in Vowpal Wabbit.
 
 Now, call learn for each trained example on your VW model.
 
