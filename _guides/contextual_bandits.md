@@ -103,21 +103,24 @@ There are four main components to a Contextual Bandit problem:
 
 Vowpal Wabbit provides three CB algorithms:
 
-* **`--cb`:** The CB module which allows you to optimize predictor based on already collected CB data, CB without exploration
-* **`--cb_explore`:** The CB learning algorithm for when the maximum number of actions is known ahead of time and semantics of actions stays the same across examples
-*  **`--cb_explore_adf`:** The CB learning algorithm for when the set of actions changes over time or we have rich information for each action VW offers different input formats for CB.
+* **`--cb`:** The CB module which allows you to optimize predictor based on already collected CB data, CB without exploration.
+* **`--cb_explore`:** The CB learning algorithm for when the maximum number of actions is known ahead of time and semantics of actions stays the same across examples.
+*  **`--cb_explore_adf`:** The CB learning algorithm for when the set of actions changes over time or you have rich information for each action VW offers different input formats for CB.
 
 ### Input format for `--cb`
 
 `--cb <number_of_actions>`
 
-The command line argument  `--cb 4` specifies we want to use CB module and our data has a total of four actions.
+The `--cb 4` command specifies that we want to use CB module and our data has a total of four actions.
 
 Each example is represented as a separate line in your data file and must follow the following format:
+
 ```
 action:cost:probability | features
 ```
+
 Sample data file **train.dat** with five examples:
+
 ```
 1:2:0.4 | a c
 3:0.5:0.2 | b d
@@ -136,32 +139,35 @@ Use the command `./vw -d train.dat --cb 4`
 
 The command `--cb_explore 4` specifies our examples explore a total of four actions.
 
->**Note:** This format explores the action space so you must **specify** which algorithm you want to use for exploration.
-
->**Note:** The following example format is the same as in the case of `--cb`
+>**Note:** This format explores the action space so you must specify which algorithm you want to use for exploration.
 
 ### Usage
 
-- `./vw -d train.dat --cb_explore 4 --first 2`
-  - In this case, on the first two actions, you take each of the four actions with probability 1/4.
-- `./vw -d train.dat --cb_explore 4 --epsilon 0.2`
-  - In this case, the prediction of the current learned policy takes with probability 1 - _epsilon_ 80% of the time, and with the remaining 20% epsilon probability, an action is chosen uniformly at random.
-- `./vw -d train.dat --cb_explore 4 --bag 5`
-  - In this case, you use an ensemble approach. Take an argument _m_ for `--bag` and train _m_ different policies, i.e., 5 in the above example. The policies differ because they train on different subsets of data, with each example going to a subset of the _m_ policies.
-- `./vw -d train.dat --cb_explore 4 --cover 3`
-  - In this case, similar to bagging _m_ different policies are trained but unlike bagging the training of these policies is explicitly optimized to result in a diverse set of predictions, choosing all the actions which are not already learned to be bad in a given context.
+The following examples use the input format for the `--cb` command example above:
 
-  This algorithm is a _theoretically optimal_ exploration algorithm.Read more about it in this <a href="http://arxiv.org/abs/1402.0555" target="_blank">paper</a>.
+`./vw -d train.dat --cb_explore 4 --first 2`
+
+ In this case, on the first two actions, you take each of the four actions with probability 1/4.
+
+`./vw -d train.dat --cb_explore 4 --epsilon 0.2`
+
+In this case, the prediction of the current learned policy takes with probability 1 - _epsilon_ 80% of the time, and with the remaining 20% epsilon probability, an action is chosen uniformly at random.
+
+`./vw -d train.dat --cb_explore 4 --bag 5`
+
+In this case, you use an ensemble approach. Take an argument _m_ for `--bag` and train _m_ different policies (for example `5` in the above example). The policies differ because they train on different subsets of data, with each example going to a subset of the _m_ policies.
+
+`./vw -d train.dat --cb_explore 4 --cover 3`
+
+This algorithm is a theoretically optimal exploration algorithm. Similar to the previous bagging _m_ example, different policies are trained in this case. Unlike bagging, the training of these policies is explicitly optimized to result in a diverse set of predictions—choosing all the actions which are not already learned to be bad in a given context. 
+
+For more information and research on this theoretically optimal exploration algorithm see this <a href="http://arxiv.org/abs/1402.0555" target="_blank">paper</a>.
 
 ### Input format for `--cb_explore_adf`
 
 `--cb_explore_adf`
 
-The command `--cb_explore_adf` is different from the other two example cases because the action set changes over time (or we have rich information for each action). It best to create features for every (context, action) pair rather than features associated only with context and shared across all actions.
-
->**Note:** This format explores the action space so you must **specify** which algorithm you want to use for exploration.
-
-More details on this input format:
+The command `--cb_explore_adf` is different from the other two example cases because the action set changes over time (or we have rich information for each action). 
 
 - Each example now spans multiple lines, with one line per action
 - For each action, we have the label information (action, cost, probability), if known.
@@ -169,6 +175,10 @@ More details on this input format:
 - The semantics of cost and probability are the same as before.
 - Each example is also allowed to specify the label information on precisely one action.
 - A new line signals end of a multiline example.
+
+It best to create features for every (context, action) pair rather than features associated only with context and shared across all actions.
+
+>**Note:** This format explores the action space so you must specify which algorithm you want to use for exploration.
 
 #### Shared contextual features
 
