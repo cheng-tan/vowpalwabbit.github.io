@@ -141,7 +141,7 @@ The command `--cb_explore 4` specifies our examples explore a total of four acti
 
 >**Note:** This format explores the action space so you must specify which algorithm you want to use for exploration.
 
-### Usage
+#### Usage
 
 The following examples use the input format for the `--cb` command example above:
 
@@ -180,13 +180,14 @@ It best to create features for every (context, action) pair rather than features
 
 >**Note:** This format explores the action space so you must specify which algorithm you want to use for exploration.
 
-#### Shared contextual features
+### Shared contextual features
 
 You can specify contextual features which share all line actions at the beginning of an example, which always has a `shared` label, as in the second multiline example below.
 
 Since the shared line is not associated with any action, it should never contain the label information.
 
 Sample data file **train.dat** with two examples:
+
 ```
 | a:1 b:0.5
 0:0.1:0.75 | a:0.5 b:1 c:2
@@ -195,9 +196,15 @@ shared | s_1 s_2
 0:1.0:0.5 | a:1 b:1 c:1
 | a:0.5 b:2 c:1
 ```
-In the first example, we have two actions, one line for each. The first line represents the first action, and it has two action dependent features _a_ and _b_.
+In the first example, we have two actions, one line for each. The first line represents the first action, and it has two action dependent features _a_ and _b_. 
 
-The second line represents the second action, and it has three action dependent features _a_, _b_, and _c_. The second action was the chosen action for the example, and it follows the following format:
+`| a:1 b:0.5`
+
+The second line represents the second action, and it has three action dependent features _a_, _b_, and _c_. 
+
+`0:0.1:0.75 | a:0.5 b:1 c:2`
+
+If the second action is the chosen action it follows the following format:
 
 ```
 action:cost:probability | features
@@ -205,7 +212,9 @@ action:cost:probability | features
 ```
 Action 0 is ignored, has cost 0.1 and a probability of 0.75.
 
-**Usage:**
+#### Usage
+
+In the case of the softmax explorer, which uses the policy not only to predict an action but also predict a score indicating the quality of each action. The probability of action _a_ creates distribution proportional to exp(lambda*score(x,a)).
 
 - `./vw -d train_adf.dat --cb_explore_adf`
 - `./vw -d train.dat --cb_explore_adf --first 2`
@@ -213,13 +222,13 @@ Action 0 is ignored, has cost 0.1 and a probability of 0.75.
 - `./vw -d train.dat --cb_explore_adf --bag 5`
 - `./vw -d train.dat --cb_explore_adf --softmax --lambda 10`
 
-In the case of the softmax explorer, which uses the policy not only to predict an action but also predict a score indicating the quality of each action. The probability of action _a_ creates distribution proportional to exp(lambda*score(x,a)).
-
 Here lambda is a parameter, which leads to uniform exploration for lambda = 0, and stops exploring as lambda approaches infinity. In general, this provides an excellent knob for controlled exploration based on the uncertainty in the learned policy.
 
 ## Create Contextual Bandit test data
 
-Begin by loading the required packages:
+## Create Contextual Bandit test data
+
+Begin by loading the required Python packages:
 
 ```python
 import pandas as pd
@@ -235,7 +244,7 @@ apt-get install libboost-program-options-dev zlib1g-dev libboost-python-dev -y
 pip install vowpalwabbit
 ```
 
-Generate sample training data that could originate from previous random trial, e.g. AB test, for the CB to explore:
+Now, generate some sample training data that could originate from previous random trial, e.g. AB test, for the CB to explore:
 
 ```python
 train_data = [{'action': 1, 'cost': 2, 'probability': 0.4, 'feature1': 'a', 'feature2': 'c', 'feature3': ''},
@@ -251,9 +260,9 @@ train_df['index'] = range(1, len(train_df) + 1)
 train_df = train_df.set_index("index")
 ```
 
->**Note:** The data here is equivalent to this <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Logged-Contextual-Bandit-Example" target="_blank">VW wiki example</a>.
+>**Note:** The data here is equivalent to the <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Logged-Contextual-Bandit-Example" target="_blank">VW wiki example</a>.
 
-Create test data, for example features describing new users, for the CB to exploit to make decisions:
+Next, create test data, for example features describing new users, for the CB to exploit to make decisions:
 
 ```python
 test_data = [{'feature1': 'b', 'feature2': 'c', 'feature3': ''},
@@ -280,7 +289,7 @@ test_df.head()
 
 First, create the Python model store the model parameters in the Python `vw` object.
 
-Use arguments for a Contextual Bandit with four possible actions.
+Use the following command for a Contextual Bandit with four possible actions:
 
 ```python
 from vowpalwabbit import pyvw
@@ -288,9 +297,9 @@ from vowpalwabbit import pyvw
 vw = pyvw.vw("--cb 4")
 ```
 
->**Note:** You can pass `--quiet` if you want vw to stop talking while it's working.
+>**Note:** Use `--quiet` command if you want to stop VW diagnostics while you work.
 
-Now, for each trained example we call learn on our vw model.
+Now, call learn for each trained example on your VW model.
 
 ```python
 for i in train_df.index:
@@ -308,9 +317,7 @@ for i in train_df.index:
   vw.learn(learn_example)
 ```
 
-Use the model that was just trained on the train set to perform predictions on the test set.
-
-Construct the example as before but don't include the label and pass it into predict instead of learn. For example:
+Use the model that was just trained on the train set to perform predictions on the test set. Construct the example like before but don't include the label and pass it into _predict_ instead of _learn_. For example:
 
 ```python
 for j in test_df.index:
@@ -324,7 +331,7 @@ for j in test_df.index:
   print(j, choice)
 ```
 
->**Note:** The CB assigns every instance to the third action as it should per the cost structure of the trained data. You can save and load the model you train from a file.
+>**Note:** The CB assigns every instance to the third action as it should per the cost structure of the train data. You can save and load the model you train from a file.
 
 Finally, experiment with the cost structure to see that the CB updates its predictions accordingly.
 
@@ -340,7 +347,7 @@ The `-i` argument means input regressor, telling VW to load a model from that fi
 
 ## More to explore
 
-- Look through <a href="https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/python/examples" target="_blank">example Python notebooks</a>
-- Explore more content in the <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Tutorial#more-tutorials" target="_blank">tutorials section of the GitHub wiki</a>
+- Review the <a href="https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/python/examples" target="_blank">example Python notebooks</a>
+- Explore the <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Tutorial#more-tutorials" target="_blank">tutorials section of the GitHub wiki</a>
 - Browse <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Examples" target="_blank">examples on the GitHub wiki</a>
-- Check out the various <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Command-Line-Arguments" target="_blank">command line options of VW</a>
+- Learn various <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Command-Line-Arguments" target="_blank">VW commands</a>
