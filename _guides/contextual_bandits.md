@@ -26,7 +26,7 @@ Contextual Bandits are algorithms that use additional information (or context) t
 
 ### Contextual Bandits: Learn by example
 
-To introduce you to the capabilities of CB algorithms, this guide uses a hypothetical application called _APP_. This application interacts with the context of a user's behavior (search history, visited pages, or geolocation) in a dynamic environment–such as a news website or a cloud controller.
+To introduce the capabilities of CB algorithms, this guide uses a hypothetical application called _APP_. This application interacts with the context of a user's behavior (search history, visited pages, or geolocation) in a dynamic environment–such as a news website or a cloud controller.
 
 _APP_ performs the following functions:
 
