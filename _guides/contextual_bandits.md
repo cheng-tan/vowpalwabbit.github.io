@@ -12,7 +12,7 @@ resource_icon: /svg/resources/guide.svg
 
 # Contextual Bandits and Vowpal Wabbit
 
-This guide describes how to run Contextual Bandit (CB) algorithms in Vowpal Wabbit (VW). It features an overview of CB algorithms, when to use them, and a Python tutorial with examples. The goal is to empower you to explore and experiment with CB algorithms and create models in VW.
+This guide describes how to use Contextual Bandit (CB) algorithms in Vowpal Wabbit (VW). It features a Python tutorial and an overview of CB algorithms—including when to use them, how to work with with different CB approaches, how to format test data, and understand the results. The goal is to empower you to explore and experiment with CB algorithms and create models in VW.
 
 ## Getting started with Vowpal Wabbit
 
@@ -67,11 +67,11 @@ Contexts and actions are typically represented as feature vectors in CB algorith
 
 ## Working with CB in Vowpal Wabbit
 
-In this section, we go over different CB functionalities offered by VW, understand how to format data, and understand the results.
+This section covers the functional capacity of CB in Vowpal Wabbit, including working with different approaches, how to format data, and understand the results.
 
 ### Specifying the CB approach
 
-Multiple policy evaluation approaches are used to optimize a policy. VW offers four approaches to  specify CB approach using `--cb_type`:
+Multiple policy evaluation approaches are used to optimize a policy. VW offers four approaches to specify CB approach using `--cb_type`:
 
 - **Inverse Propensity Score:** `--cb_type ips`
 - **Doubly Robust:** `--cb_type dr`
@@ -141,7 +141,8 @@ The command `--cb_explore 4` specifies our examples explore a total of four acti
 
 >**Note:** The following example format is the same as in the case of `--cb`
 
-Usage:
+### Usage
+
 - `./vw -d train.dat --cb_explore 4 --first 2`
   - In this case, on the first two actions, you take each of the four actions with probability 1/4.
 - `./vw -d train.dat --cb_explore 4 --epsilon 0.2`
@@ -300,7 +301,7 @@ for i in train_df.index:
 
 Use the model that was just trained on the train set to perform predictions on the test set.
 
-Construct the example as before but don't include the label and pass it into predict instead of learn.
+Construct the example as before but don't include the label and pass it into predict instead of learn. For example:
 
 ```python
 for j in test_df.index:
@@ -314,7 +315,7 @@ for j in test_df.index:
   print(j, choice)
 ```
 
->**Note:** The CB assigns every instance to the third action as it should per the cost structure of the train data. You can save and load the model you train from a file.
+>**Note:** The CB assigns every instance to the third action as it should per the cost structure of the trained data. You can save and load the model you train from a file.
 
 Finally, experiment with the cost structure to see that the CB updates its predictions accordingly.
 
