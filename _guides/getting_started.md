@@ -12,13 +12,13 @@ resource_icon: /svg/resources/guide.svg
 
 # Getting Started with Linear Regression and Vowpal Wabbit
 
-This guide describes how to run Linear Regression (LR) algorithms in Vowpal Wabbit (VW). It features an overview of a simple regression problem using a VW workflow tutorial with examples. Find information about interacting with VW, including structuring input, understanding output, and VW diagnostics. The goal is to empower you to explore, experiment, and predict by creating models in VW.
+This guide describes how to run Linear Regression with Vowpal Wabbit (VW). It features an overview of a simple regression problem using a VW workflow tutorial with examples. Find information about interacting with VW, including structuring input, understanding output, and learn important VW diagnostics. 
 
 ## Getting started with Vowpal Wabbit
 
 To install VW—and for more information on building VW from source or using a package manager—see [Getting started](https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Getting-started) guide. 
 
->**Note:** The CB tutorial uses [Vowpal Wabbit Python package](https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/python). VW is supported in C++ and C#, and additional binary packages are available for select platforms. See [Getting started](https://cheng-tan.github.io/vowpalwabbit.github.io/) module on the homepage for more information.
+>**Note:** The CB tutorial uses [Vowpal Wabbit Python package](https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/python). Additional binary packages are available for select platforms. See [Getting started](https://cheng-tan.github.io/vowpalwabbit.github.io/) module on the homepage for more information.
 
 ## Create linear regression data-set in Vowpal Wabbit
 
@@ -47,9 +47,9 @@ The label information for the second line is more complex than the first:
 
 `1 2 'second_house | price:.18 sqft:.15 age:.35 1976`
 
-The `1` is the label indicating that a roof replacement is required. 
-The `2` is an optional _importance weight_, which implies that this example counts twice. The importance weight comes up in many settings. 
-A missing importance weight defaults to 1. `'second_house` is the tag, it is used elsewhere to identify the example.
+- The `1` is the label indicating that a roof replacement is required. 
+- The `2` is an optional _importance weight_, which implies that this example counts twice. The importance weight comes up in many settings. 
+- A missing importance weight defaults to 1. `'second_house` is the tag. You can find more information on importance weight in the the Vowpal Wabbit diagnostic header section below.
 
 The third line is more straightforward, except for a new number: 
 
