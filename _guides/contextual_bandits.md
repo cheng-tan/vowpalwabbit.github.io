@@ -26,7 +26,7 @@ Contextual Bandits are algorithms that use additional information (or context) t
 
 ### Contextual Bandits: Learn by example
 
-For the purposes of introducing you to CB algorithms, this guide uses a hypothetical application called _APP_. This application interacts with the context of a user's behavior (search history, visited pages, or geolocation) in a dynamic environment–such as a news website or a cloud controller.
+To introduce you to the capabilities of CB algorithms, this guide uses a hypothetical application called _APP_. This application interacts with the context of a user's behavior (search history, visited pages, or geolocation) in a dynamic environment–such as a news website or a cloud controller.
 
 _APP_ performs the following functions:
 
@@ -67,20 +67,18 @@ In machine learning, the model means _learned function_. When someone says polic
 Contexts and actions are typically represented as feature vectors in CB algorithms. For example, _APP_ chooses actions by applying a policy **π** that takes a context as input and returns an action. The goal is to find a policy that maximizes the average reward over a sequence of interactions.
 
 ## Working with CB in Vowpal Wabbit
-
 This section covers the functional capacity of CB in Vowpal Wabbit, including working with different approaches, how to format data, and understand the results.
 
 ### Specifying the CB approach
 
-Multiple policy evaluation approaches are used to optimize a policy. VW offers four approaches to specify CB approach using `--cb_type`:
+There are multiple policy evaluation approaches available to optimize a policy. VW offers four approaches to  specify CB approach using `--cb_type`:
 
 - **Inverse Propensity Score:** `--cb_type ips`
 - **Doubly Robust:** `--cb_type dr`
 - **Direct Method:** `--cb_type dm`
 - **Multi Task Regression/Importance Weighted Regression:** `--cb_type mtr`
 
-
->The focal point of CB learning research is efficient exploration algorithms. For more details, please refer to the <a href="https://arxiv.org/pdf/1802.04064.pdf" target="_blank">Contextual Bandit bake-off paper</a>.
+>**Note:** The focal point of CB learning research is efficient exploration algorithms. For more details, see the <a href="https://arxiv.org/pdf/1802.04064.pdf" target="_blank">Contextual Bandit bake-off paper</a>.
 
 ### Specifying exploration algorithms
 
