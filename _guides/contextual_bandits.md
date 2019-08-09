@@ -71,7 +71,7 @@ This section covers the functional capacity of CB in Vowpal Wabbit, including wo
 
 ### Specifying the CB approach
 
-There are multiple policy evaluation approaches available to optimize a policy. VW offers four approaches to  specify CB approach using `--cb_type`:
+There are multiple policy evaluation approaches available to optimize a policy. VW offers four approaches to specify CB approach using `--cb_type`:
 
 - **Inverse Propensity Score:** `--cb_type ips`
 - **Doubly Robust:** `--cb_type dr`
