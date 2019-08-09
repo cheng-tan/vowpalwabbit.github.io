@@ -12,7 +12,7 @@ resource_icon: /svg/resources/guide.svg
 
 # Getting Started with Linear Regression and Vowpal Wabbit
 
-This guide describes how to run Linear Regression with Vowpal Wabbit (VW). It features an overview of a simple regression problem using a VW workflow tutorial with examples. Find information about interacting with VW, including structuring input, understanding output, and learn important VW diagnostics. 
+This guide describes how to perform Linear Regression with Vowpal Wabbit (VW). It features an overview of a simple regression problem using a VW workflow tutorial with examples. Find information about interacting with VW, including structuring input, understanding output, and learn important VW diagnostics. 
 
 ## Getting started with Vowpal Wabbit
 
@@ -95,17 +95,17 @@ This section provides information on the various types of diagnostic information
 
 ### Hash function bits
 
-The following output sample shows the number of bits from the hash function:
+The following VW output shows the number of bits from the hash function:
 
 ```
 Num weight bits = 18
 ```
 
-This diagnostic shows that the number of hash function bits is 18 (more than enough for this example). Use `-b bits` to adjust the number of bits for a hash function.
+This diagnostic shows that the number of bits from the hash function is 18 (more than enough for this example). Use `-b bits` to adjust the number of bits for a hash function.
 
 ### Learning rate
 
-The following code sample shows the learning rate:
+The following VW output shows the learning rate:
 
 ```
 learning rate = 0.5
@@ -121,27 +121,27 @@ If the data is noisy, you need a larger data-set or multiple passes to predict w
 
 ### Learning rate decay
 
-The following code sample shows the initial time:
+The following VW output sample shows the initial time:
 
 ```
 initial_t = 0
 ```
 
-This diagnostic specifies the initial time or duration for learning rate decay. 
+This diagnostic shows the initial time duration for learning rate decay. 
 
 **Use** `--initial_t time` to adjust the initial time. 
 
->**Note:** It is not common to adjust the initial time in Vowpal Wabbit. 
+>**Note:** It is common to need to adjust the initial time in Vowpal Wabbit. 
 
 ### Learning rate decay power
 
-The following code sample shows the power of learning rate decay:
+The following VW output shows the power of learning rate decay:
 
 ```
 power_t = 0.5
 ```
 
-This diagnostic specifies the power of learning rate decay. The VW default is `0.5` and works well for most problems. 
+This diagnostic shows the power on learning rate decay. The VW default is `0.5` and works well for most problems. 
 
 The `0.5` default is a minimax optimal choice for stationary data-sets where the fundamental relation between the input features and target label do not change over time and benefit from a high (close to 1.0) `--power_t` while learning against changing conditions. 
 
@@ -154,7 +154,7 @@ Conditions like learning against an adversary who continuously changes the rules
 
 ### Cache files
 
-The following code sample shows that you are not using a cache file: 
+The following VW output shows that you are not using a cache file: 
 
 ```
 using no cache
@@ -174,7 +174,7 @@ The first time you use `-c` you create a cache file. If the cache already exists
 
 ### Data sources 
 
-The following code sample shows the source of data: 
+The following VW output shows the source of data: 
 
 ```
 Reading datafile = house_dataset
@@ -186,7 +186,7 @@ Alternative data sources include _cache files_ (from previous VW runs), _stdin_,
 
 ### Number of data sources
 
-The following code sample shows the number of data sources:
+The following VW output shows the number of data sources:
 
 ```
 num sources = 1
