@@ -241,14 +241,14 @@ vw house_dataset -l 10 -c --passes 25 --holdout_off
 Now, the progress section of the output looks like this:
 
 ```
-average since  example example current current current
-loss  last  counter weight label predict features
-0.000000 0.000000      1 1.0 0.0000 0.0000    5
-0.666667 1.000000      2 3.0 1.0000 0.0000    5
-0.589385 0.531424      5 7.0 1.0000 0.2508    5
-0.378923 0.194769     11 15.0 1.0000 0.8308    5
-0.184476 0.002182     23 31.0 1.0000 0.9975    5
-0.090774 0.000000     47 63.0 1.0000 1.0000    5
+average  since         example        example  current  current  current
+loss     last          counter         weight    label  predict features
+0.000000 0.000000            1            1.0   0.0000   0.0000        5
+0.666667 1.000000            2            3.0   1.0000   0.0000        5
+0.589385 0.531424            5            7.0   1.0000   0.2508        5
+0.378923 0.194769           11           15.0   1.0000   0.8308        5
+0.184476 0.002182           23           31.0   1.0000   0.9975        5
+0.090774 0.000000           47           63.0   1.0000   1.0000        5
 ```
 
 Notice that the `since last` data dropped to `0` on line six, `example 47` (25 passes over 3 examples result in 75 examples). This result implies that, by looking at the same 3 lines of data 25 times, we reached a _perfect predictor_. Not surprising, given that with three examples and five features for each example. 
