@@ -127,7 +127,7 @@ The following VW output sample shows the initial time:
 initial_t = 0
 ```
 
-This diagnostic shows the initial time duration for learning rate decay. 
+This diagnostic shows the initial time for learning rate decay. 
 
 **Use** `--initial_t time` to adjust the initial time. 
 
