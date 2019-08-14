@@ -72,10 +72,10 @@ power_t = 0.5
 using no cache
 Reading datafile = house_dataset
 num sources = 1
-average since  example example current current current
-loss  last  counter weight label predict features
-0.000000 0.000000      1 1.0 0.0000 0.0000    5
-0.666667 1.000000      2 3.0 1.0000 0.0000    5
+average  since         example        example  current  current  current
+loss     last          counter         weight    label  predict features
+0.000000 0.000000            1            1.0   0.0000   0.0000        5
+0.666667 1.000000            2            3.0   1.0000   0.0000        5
 
 finished run
 number of examples = 3
