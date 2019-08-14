@@ -113,7 +113,7 @@ learning rate = 0.5
 
 The default learning rate is `0.5` with current default update (`--normalized --invariant --adaptive`). 
 
-If the data is noisy, you need a larger data-set or multiple passes to predict well. For massive data-sets, the learning rate decays to `0` by default. 
+If the data is noisy, you need a larger data-set or multiple passes to predict well. For massive data-sets, the learning rate decays towards `0` by default. 
 
 **Use** `-l rate` to adjust the learning rate up or down.
 
