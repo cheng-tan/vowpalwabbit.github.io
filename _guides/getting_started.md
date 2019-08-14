@@ -176,7 +176,7 @@ The following VW output shows the source of data:
 Reading datafile = house_dataset
 ```
 
-VW supports a variety of different input methods. This example uses a simple text file, and VW displays a diagnostic with the source of the data. 
+VW supports a variety of different input methods. This example uses a simple text file, and VW displays the source of the data. 
 
 Alternative data sources include _cache files_ (from previous VW runs), _stdin_, or a _tcp socket_.
 
