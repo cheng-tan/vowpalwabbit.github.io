@@ -307,9 +307,7 @@ The output for this command is:
 0.000000 third_house
 ```
 
-The results are different for this example because the first prediction example made only one pass over the data, in other words, learning as it worked. 
-
-For this example, you loaded the over-fitted model (25 passes) and used the `house_dataset` with `-t` (or _testing only_ mode). 
+The results are different this time because the first prediction made one pass over the data. In the second example, you loaded the over-fitted model (25 passes) and used the `house_dataset` with `-t` (or _testing only_ mode). 
 
 >**Note:** Always use a different data-set for testing vs. training for real prediction settings.
 
