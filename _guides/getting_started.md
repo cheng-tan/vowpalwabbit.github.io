@@ -269,7 +269,7 @@ vw house_dataset -l 10 -c --passes 25 --holdout_off -f house.model
 
 ## Make predictions with Vowpal Wabbit 
 
-You can make predictions in VW by supplying the `-p filename`. For example, using filename `stdout`:
+You can make predictions in VW by supplying the `-p filename`. For example, to output them to standard out
 
 ```sh
 vw house_dataset -p /dev/stdout --quiet
