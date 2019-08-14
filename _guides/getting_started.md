@@ -211,7 +211,7 @@ loss     last          counter         weight    label  predict features
 
 The `current features` diagnostic is excellent for debugging. Note that we have five features when you expect four. This change happens because VW always adds a default _constant feature_.
 
-**Use** `--noconstant` the default constant feature off in VW. 
+**Use** `--noconstant` to disable the default constant feature. 
 
 ## Vowpal Wabbit debugging diagnostics 
 
