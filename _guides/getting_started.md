@@ -257,7 +257,7 @@ Notice that the `since last` data dropped to 0 by example 47 (25 passes over 3 e
 
 **Use** `--holdout_period period` to change the "1 in 10" period in VW. 
 
-## Saving regressor model files
+## Saving your model into a file
 
 Vowpal Wabbit learns the weights of the features and keeps them in an _in-memory vector_ by default. 
 
