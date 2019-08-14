@@ -255,7 +255,7 @@ Notice that the `since last` data dropped to 0 by example 47 (25 passes over 3 e
 
 >**Note:** You have to add `--holdout_off` because VW automatically switches to _over-fit avoidance_ mode by holding 10% of the examples and evaluating performance on the data being held instead of using online training progressive loss algorithms.
 
-**Use** `--holdout_period period` to change the one in 10 default holdout in VW. 
+**Use** `--holdout_period period` to change the "1 in 10" period in VW. 
 
 ## Saving regressor model files
 
