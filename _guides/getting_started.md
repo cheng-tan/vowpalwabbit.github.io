@@ -135,17 +135,15 @@ This diagnostic shows the initial time for learning rate decay.
 
 ### Learning rate decay power
 
-The following VW output shows the power of learning rate decay:
+The following VW output shows the power on learning rate decay:
 
 ```
 power_t = 0.5
 ```
 
-This diagnostic shows the power on learning rate decay. The VW default is `0.5` and works well for most problems. 
+This diagnostic shows the power on learning rate decay. The VW default is `0.5` and a _minimax optimal choice_. This value works well for most problems. 
 
-The `0.5` default is a minimax optimal choice for stationary data-sets where the fundamental relation between the input features and target label do not change over time and benefit from a high (close to 1.0) `--power_t` while learning against changing conditions. 
-
-Conditions like learning against an adversary who continuously changes the rules-of-the-game, benefit from low (close to 0) `--power_t` so the learner can react quickly to these changing conditions. 
+Stationary datasets, where the fundamental relation between the input features and target label are not changing over time, should benefit from a high (close to 1.0) --power_t while learning against changing conditions. For example, learning against an adversary who continuously changes the rules-of-the-game, benefit from low (close to 0) `--power_t` so the learner can react quickly to these changing conditions.  
 
 **Use** `--power_t p` to adjust learning rate decay—where _p_ is in the range [0,1]. 
 
