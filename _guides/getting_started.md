@@ -204,7 +204,7 @@ loss     last          counter         weight    label  predict features
 -**`average loss`** computes the <a href="http://hunch.net/~jl/projects/prediction_bounds/progressive_validation/coltfinal.pdf" target="_blank">progressive validation</a> loss. Progressive validation loss deviates like a test set, and hence is a reliable indicator of success on the first pass over any data-set.
 -**`since last`** is the progressive validation loss since the last printout.
 -**`example counter`** indicates which example is printed out. In this case,  example `2`.
--**`example weight`** is the sum of the importance weights of examples so far. In this case, it's `3.0`, because the second example has an importance weight of `2`.
+-**`example weight`** is the sum of the importance weights of examples seen so far. In this case, it's `3.0`, because the second example has an importance weight of `2`.
 -**`current label`** is the label of the second example.
 -**`current predict`** is the prediction (before training) on the current example.
 -**`current features`** is the number of features in the current example. 
