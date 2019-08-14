@@ -311,7 +311,7 @@ The results are different this time because the first prediction made one pass o
 
 >**Note:** Always use a different data-set for testing vs. training for real prediction settings.
 
-## Auditing machine learning applications with Vowpal Wabbit
+## Auditing with Vowpal Wabbit
 
 VW has a built-in audit option that helps debug machine learning (ML) applications.
 
