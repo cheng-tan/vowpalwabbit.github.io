@@ -95,7 +95,7 @@ This section provides information on the various types of diagnostic information
 
 ### Hash function bits
 
-The following VW output shows the number of bits from the hash function:
+The following output shows the number of bits from the hash function:
 
 ```
 Num weight bits = 18
@@ -105,7 +105,7 @@ This diagnostic shows that the number of bits from the hash function is 18 (more
 
 ### Learning rate
 
-The following VW output shows the learning rate:
+The following output shows the learning rate:
 
 ```
 learning rate = 0.5
@@ -121,7 +121,7 @@ If the data is noisy, you need a larger data-set or multiple passes to predict w
 
 ### Learning rate decay
 
-The following VW output sample shows the initial time:
+The following output sample shows the initial time:
 
 ```
 initial_t = 0
@@ -135,7 +135,7 @@ This diagnostic shows the initial time for learning rate decay.
 
 ### Learning rate decay power
 
-The following VW output shows the power on learning rate decay:
+The following output shows the power on learning rate decay:
 
 ```
 power_t = 0.5
@@ -152,7 +152,7 @@ Stationary datasets, where the fundamental relation between the input features a
 
 ### Cache files
 
-The following VW output shows that you are not using a cache file: 
+The following output shows that you are not using a cache file: 
 
 ```
 using no cache
@@ -170,7 +170,7 @@ The first time you use `-c` you create a cache file. If the cache already exists
 
 ### Data sources 
 
-The following VW output shows the source of data: 
+The following output shows the source of data: 
 
 ```
 Reading datafile = house_dataset
@@ -182,7 +182,7 @@ Alternative data sources include _cache files_ (from previous VW runs), _stdin_,
 
 ### Number of data sources
 
-The following VW output shows the number of data sources:
+The following output shows the number of data sources:
 
 ```
 num sources = 1
