@@ -337,7 +337,7 @@ Every example uses two lines:
 The first line is the prediction.
 The second line shows one entry per feature. 
 
-VW has an advanced_namespaces_ feature that allows you to group features and operate them on-the-fly. Namespace options include the following: 
+VW has an advanced _namespaces_ feature that allows you to group features and operate them on-the-fly. Namespace options include the following: 
 
 Use `-q XY` to cross a pair of namespaces.
 Use `--cubic XYZ` to cross 3 namespaces.
