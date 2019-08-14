@@ -195,10 +195,10 @@ There is only one input file in this example. You can specify multiple files in 
 Next, VW shows you some diagnostic information in the header.
 
 ```
-average since  example example current current current
-loss  last  counter weight label predict features
-0.000000 0.000000      1 1.0 0.0000 0.0000    5
-0.666667 1.000000      2 3.0 1.0000 0.0000    5
+average  since         example        example  current  current  current
+loss     last          counter         weight    label  predict features
+0.000000 0.000000            1            1.0   0.0000   0.0000        5
+0.666667 1.000000            2            3.0   1.0000   0.0000        5
 ```
 
 -**`average loss`** computes the <a href="http://hunch.net/~jl/projects/prediction_bounds/progressive_validation/coltfinal.pdf" target="_blank">progressive validation</a> loss. Progressive validation loss deviates like a test set, and hence is a reliable indicator of success on the first pass over any data-set.
