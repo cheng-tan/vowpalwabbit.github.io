@@ -358,7 +358,7 @@ For this feature, **`price`** is the original feature name. If you use a namespa
 
 `Namespace^Feature` 
 
-Notice that the feature `2006` uses the index 2006. Like other ML tools, you can use _hashes_ or _pre-computed indices_ for features in VW.
+Notice that the feature `2006` uses the index 2006. You can use _hashes_ for features in VW, or _pre-computed indices_—as is common in other machine learning systems—. 
 
 The advantage of using unique _integer-based feature names_ is that they are guaranteed not to collide after hashing. The advantage of _free-text (non-integer)_ feature names is readability and self-documentation. 
 
