@@ -261,7 +261,7 @@ Notice that the `since last` data dropped to 0 by example 47 (25 passes over 3 e
 
 Vowpal Wabbit learns the weights of the features and keeps them in an _in-memory vector_ by default. 
 
-**Add** `-f filename` to create and save the final regressor file. For example:
+**Add** `-f filename` to save the final regressor weights to a file. For example:
 
 ```sh
 vw house_dataset -l 10 -c --passes 25 --holdout_off -f house.model
