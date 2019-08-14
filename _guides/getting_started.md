@@ -101,7 +101,7 @@ The following output shows the number of bits from the hash function:
 Num weight bits = 18
 ```
 
-This diagnostic shows that the number of bits from the hash function is 18 (more than enough for this example). Use `-b bits` to adjust the number of bits for a hash function.
+This diagnostic shows that the number of bits used from the hash function is 18 (more than enough for this example). Use `-b bits` to adjust the number of bits to use.
 
 ### Learning rate
 
