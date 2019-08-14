@@ -251,7 +251,7 @@ loss     last          counter         weight    label  predict features
 0.090774 0.000000           47           63.0   1.0000   1.0000        5
 ```
 
-Notice that the `since last` data dropped to `0` on line six, `example 47` (25 passes over 3 examples result in 75 examples). This result implies that, by looking at the same 3 lines of data 25 times, we reached a _perfect predictor_. Not surprising, given that with three examples and five features for each example. 
+Notice that the `since last` data dropped to 0 by example 47 (25 passes over 3 examples result in 75 examples). This result implies that, by looking at the same 3 lines of data 25 times, we reached a _perfect predictor_. Not surprising, given that with three examples and five features for each example. 
 
 >**Note:** You have to add `--holdout_off` when running multiple-passes. VW automatically switches to _over-fit avoidance_ mode by holding 10% of the examples and evaluating performance on the data being held instead of using online training progressive loss algorithms.
 
