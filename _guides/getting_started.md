@@ -158,17 +158,15 @@ The following VW output shows that you are not using a cache file:
 using no cache
 ```
 
-A cache file speeds up training when you run many experiments (with different options) on the same data-set—even if each experiment is only a single pass. 
+A cache file contains your dataset in a faster to handle format. It can speed up training if you use multiple passes or you run multiple experiments on the same dataset (even with different options).
 
-The default cache file name is the data-set file name with `.cache` appended. For example, `house_dataset.cache`. 
+The default cache file name is the dataset file name with `.cache` appended. For example, `house_dataset.cache`. 
 
 **Use** `--cache_file housing.cache` to override the default cache file name. 
 
-The first time you use `-c` you create a cache file. If the cache already exists and it is newer than the data-set, that is the default cache.  
+The first time you use `-c` you create a cache file. If the cache already exists and it is newer than the data-set, that is the default cache. If you want to experiment with the same dataset over and over, it is highly recommended to pass `-c` every time you train. 
 
 **Use** `-c` for multiple passes `--passes`, so VW caches the data in a faster format (passes > 1 should be much faster).  
-
->**Note:** If you want to experiment with the same data-set over and over, it is highly recommended to pass `-c` every time you train.
 
 ### Data sources 
 
