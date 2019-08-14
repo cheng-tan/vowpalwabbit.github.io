@@ -289,7 +289,7 @@ The third output, `1.000000 third_house` refers to the third example. The initia
 
 In the last example, the model was built in memory incrementally, as VW analyzed the examples. In other words, you predicted _while you learned_.
 
-It is more common to learn first, then save the model file. Then, you make predictions using that saved model.
+It is more common to learn first, then save the model to a file. Then, you make predictions using that saved model.
 
 **Use:** `-i house.model` to load the initial model to memory. 
 
