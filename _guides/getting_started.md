@@ -334,8 +334,12 @@ The output for this command is:
 
 Every example uses two lines:
 
-The first line is the prediction.
-The second line shows one entry per feature. 
+- The first line is the prediction.
+- The second line shows one entry per feature. 
+- **`229902`** is the index of the feature, computed by a hash function on the feature name.
+- **`0.23`** is the value of the feature.
+- **`0`** is the value of the feature's weight.
+- **`@0.25`** is the sum of gradients squared for that feature (when you use _per-feature adaptive learning rates_).
 
 VW has an advanced _namespaces_ feature that allows you to group features and operate them on-the-fly. Namespace options include the following: 
 
@@ -350,13 +354,9 @@ The first feature listed is:
 price:229902:0.23:0@0.25
 ```
 
-For the first feature listed, **`price`** is the original feature name. If you use a namespace, it appears before `^`. For example: 
+For this feature, **`price`** is the original feature name. If you use a namespace, it appears before `^`. For example: 
 
 `Namespace^Feature` 
-- ** `229902`** is the index of the feature, computed by a hash function on the feature name.
-- **`0.23`** is the value of the feature.
-- **`0`** is the value of the feature's weight.
-- **`@0.25**` is the sum of gradients squared for that feature (when you use _per-feature adaptive learning rates_).
 
 Notice that the feature `2006` uses the index 2006. Like other ML tools, you can use _hashes_ or _pre-computed indices_ for features in VW.
 
